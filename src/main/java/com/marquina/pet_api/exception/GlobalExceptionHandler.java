@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -25,6 +26,7 @@ public class GlobalExceptionHandler {
 
     private static final String GENERIC_ERROR_MESSAGE = "Ocurrió un error inesperado al procesar la solicitud";
     private static final String INVALID_FIELDS_MESSAGE = "La solicitud contiene campos inválidos";
+    private static final String MALFORMED_BODY_MESSAGE = "El cuerpo de la solicitud no es un JSON válido";
 
     private final Clock clock;
 
@@ -53,6 +55,15 @@ public class GlobalExceptionHandler {
 
         String message = "El parámetro '%s' debe ser un número válido".formatted(ex.getName());
         return build(HttpStatus.BAD_REQUEST, message, request, null);
+    }
+
+    // Un cuerpo ilegible es un error del cliente. Sin este handler, el catch-all
+    // de Exception lo convertiria en 500 y culparia al servicio.
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleUnreadableBody(
+            HttpMessageNotReadableException ex, HttpServletRequest request) {
+
+        return build(HttpStatus.BAD_REQUEST, MALFORMED_BODY_MESSAGE, request, null);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
