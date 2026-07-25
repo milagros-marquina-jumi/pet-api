@@ -19,10 +19,10 @@ class PetStorePropertiesTest {
     private RestTemplate petStoreRestTemplate;
 
     @Test
-    void bindsPetStoreConfigurationFromProperties() {
-        assertThat(properties.baseUrl()).isEqualTo("https://petstore.swagger.io/v2");
-        assertThat(properties.connectTimeout()).isEqualTo(Duration.ofSeconds(3));
-        assertThat(properties.readTimeout()).isEqualTo(Duration.ofSeconds(5));
+    void bindsPetStoreConfigurationFromEnvironment() {
+        assertThat(properties.baseUrl()).isEqualTo("http://localhost:9999/v2");
+        assertThat(properties.connectTimeout()).isEqualTo(Duration.ofSeconds(1));
+        assertThat(properties.readTimeout()).isEqualTo(Duration.ofSeconds(2));
     }
 
     @Test

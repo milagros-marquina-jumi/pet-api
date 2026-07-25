@@ -14,10 +14,24 @@ public record PetStoreProperties(
         @NotBlank(message = "petstore.api.base-url es obligatorio")
         String baseUrl,
 
+        @NotBlank(message = "petstore.api.pet-path es obligatorio")
+        String petPath,
+
+        @NotBlank(message = "petstore.api.pet-by-id-path es obligatorio")
+        String petByIdPath,
+
         @NotNull(message = "petstore.api.connect-timeout es obligatorio")
         Duration connectTimeout,
 
         @NotNull(message = "petstore.api.read-timeout es obligatorio")
         Duration readTimeout
 ) {
+
+    public String petUrl() {
+        return baseUrl + petPath;
+    }
+
+    public String petByIdUrl() {
+        return baseUrl + petByIdPath;
+    }
 }

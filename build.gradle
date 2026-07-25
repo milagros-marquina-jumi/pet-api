@@ -26,4 +26,5 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	systemProperty 'javax.net.ssl.trustStoreType', 'WINDOWS-ROOT'
 }
