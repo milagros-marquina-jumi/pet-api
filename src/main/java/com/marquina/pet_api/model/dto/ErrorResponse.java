@@ -12,10 +12,7 @@ public record ErrorResponse(
         String error,
         String message,
         String path,
+        String transactionId,
         Map<String, String> fieldErrors
 ) {
-
-    public static ErrorResponse of(LocalDateTime timestamp, int status, String error, String message, String path) {
-        return new ErrorResponse(timestamp, status, error, message, path, null);
-    }
 }

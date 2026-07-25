@@ -28,3 +28,9 @@ tasks.named('test') {
 	useJUnitPlatform()
 	systemProperty 'javax.net.ssl.trustStoreType', 'WINDOWS-ROOT'
 }
+
+tasks.named('bootRun') {
+	if (System.getProperty('os.name').toLowerCase().contains('windows')) {
+		systemProperty 'javax.net.ssl.trustStoreType', 'WINDOWS-ROOT'
+	}
+}
