@@ -18,6 +18,13 @@ Para ver el detalle de las llamadas al sistema externo:
 SPRING_PROFILES_ACTIVE=dev ./gradlew bootRun
 ```
 
+## Documentación de la API
+
+Con la aplicación levantada:
+
+- Swagger UI: http://localhost:8080/swagger-ui.html
+- Contrato OpenAPI: http://localhost:8080/v3/api-docs
+
 ## Endpoints
 
 ### GET /api/pet/{petId}
