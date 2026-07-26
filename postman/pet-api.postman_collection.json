@@ -1,0 +1,171 @@
+{
+  "info": {
+    "name": "Pet API",
+    "description": "Ssr Backend Developer / Technical Interview. Requiere la aplicacion levantada en {{baseUrl}}.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "petId",
+      "value": "10000023"
+    }
+  ],
+  "item": [
+    {
+      "name": "Get Pet",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/pet/{{petId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "pet", "{{petId}}"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test('Returns contract fields', () => {",
+              "    pm.expect(body).to.have.all.keys('id', 'name', 'status');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Pet - Not Found",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/pet/999999999",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "pet", "999999999"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 404', () => pm.response.to.have.status(404));",
+              "pm.test('Returns error contract', () => {",
+              "    pm.expect(pm.response.json()).to.have.property('message');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Pet - Invalid Id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/pet/abc",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "pet", "abc"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 400', () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Add Pet",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"id\": 10000023,\n    \"status\": \"available\",\n    \"name\": \"testingPet1\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/pet",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "pet"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test('Returns transaction fields', () => {",
+              "    pm.expect(body).to.have.all.keys('transactionId', 'dateCreated', 'status', 'name');",
+              "});",
+              "pm.test('transactionId is UUIDv4', () => {",
+              "    pm.expect(body.transactionId).to.match(",
+              "        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);",
+              "});",
+              "pm.test('status is boolean true', () => pm.expect(body.status).to.eql(true));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Add Pet - Invalid Body",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"id\": -5,\n    \"status\": \"invalido\",\n    \"name\": \"\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/pet",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "pet"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 400', () => pm.response.to.have.status(400));",
+              "pm.test('Returns field errors', () => {",
+              "    pm.expect(pm.response.json()).to.have.property('fieldErrors');",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

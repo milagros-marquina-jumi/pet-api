@@ -5,6 +5,12 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### Local overrides and secrets ###
+**/application-local.properties
+**/application-local.yml
+**/application-secrets.properties
+.env
+
 ### STS ###
 .apt_generated
 .classpath
@@ -34,4 +40,7 @@ out/
 /.nb-gradle/
 
 ### VS Code ###
-.vscode/
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore
