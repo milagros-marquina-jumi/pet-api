@@ -1,0 +1,80 @@
+{
+  "info": {
+    "name": "Pet API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "Get Pet",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/pet/10000023",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "pet", "10000023"]
+        }
+      }
+    },
+    {
+      "name": "Get Pet - Not Found",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/pet/999999999",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "pet", "999999999"]
+        }
+      }
+    },
+    {
+      "name": "Add Pet",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"id\": 10000023,\n    \"status\": \"available\",\n    \"name\": \"testingPet1\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/pet",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "pet"]
+        }
+      }
+    },
+    {
+      "name": "Add Pet - Invalid Body",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"id\": -5,\n    \"status\": \"invalido\",\n    \"name\": \"\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/pet",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "pet"]
+        }
+      }
+    }
+  ]
+}
